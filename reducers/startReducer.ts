@@ -23,6 +23,7 @@ export const starInitialState = {
   character: characterInitialState,
   totalPeople: 0,
   currentPage: 1,
+  peopleTable: [],
 };
 
 export function startReducer(state: IStarInitialState, action: any) {
@@ -30,7 +31,9 @@ export function startReducer(state: IStarInitialState, action: any) {
     case "SET_LOADING":
       return { ...state, isLoading: action.payload };
     case "SET_PEOPLE":
-      return { ...state, people: [...state.people, action.payload] };
+      return { ...state, people: [...action.payload, ...state.people] };
+    case "SET_PEOPLE_TABLE":
+      return { ...state, peopleTable: action.payload };
     case "SET_CHARACTER":
       return { ...state, character: action.payload };
     case "SET_TOTAL_PEOPLE":

@@ -15,6 +15,12 @@ export const StarProvider = ({ children }: TStarProviderProps) => {
       payload: people,
     });
   };
+  const getPeopleTable = (people: IPeople[]) => {
+    dispatch({
+      type: "SET_PEOPLE_TABLE",
+      payload: people,
+    });
+  };
 
   const getTotalPeople = (count: number) => {
     dispatch({
@@ -43,19 +49,38 @@ export const StarProvider = ({ children }: TStarProviderProps) => {
     });
   };
 
+  const searchCharacter = (search: string) => {
+    const result = state.people.filter((character: any) =>
+      character.name.includes(search)
+    );
+    console.log(result);
+    if (result.length > 0) {
+      getPeopleTable(result.slice(0, 10));
+      return;
+    }
+    getPeopleTable([]);
+  };
+
+  const getPeoplePerPage = async (page: number) => {
+    changeStatusLoading(true);
+    const response: IResponseAPI = await getPeopleApi(page);
+    const { count, results } = response;
+    getPeopleTable(results.slice(0, 10));
+    getPeople(results);
+    getTotalPeople(count);
+    getCurrentPage(page);
+    changeStatusLoading(false);
+  };
+
   useEffect(() => {
-    (async () => {
-      const response: IResponseAPI = await getPeopleApi(1);
-      const { count, results } = response;
-      getPeople(results);
-      getTotalPeople(count);
-      getCurrentPage(1);
-    })();
+    getPeoplePerPage(1);
     return () => {
       getPeople([]);
       getTotalPeople(0);
       getCurrentPage(1);
+      getPeopleTable([]);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const defaultValue = {
@@ -65,6 +90,8 @@ export const StarProvider = ({ children }: TStarProviderProps) => {
     getPeople,
     getTotalPeople,
     getCurrentPage,
+    getPeoplePerPage,
+    searchCharacter,
   };
   return (
     <StarContext.Provider value={defaultValue}>{children}</StarContext.Provider>

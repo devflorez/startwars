@@ -2,7 +2,15 @@ import type { NextPage } from "next";
 import Layout from "components/Layout";
 import { IPeople, IResponseAPI } from "interfaces/starWars";
 import { IHomeProps } from "interfaces/home";
-import { Table, Text, Grid, Tooltip, Collapse } from "@nextui-org/react";
+import {
+  Table,
+  Text,
+  Grid,
+  Tooltip,
+  Collapse,
+  Pagination,
+  Container,
+} from "@nextui-org/react";
 import { EyeIcon } from "icons/EyeIcon";
 import { IconButton } from "components/IconButton";
 import ModalC from "components/Modal";
@@ -10,17 +18,27 @@ import useWindowSize from "hooks/useWindoSize";
 import useModal from "hooks/useModal";
 import { useContext } from "react";
 import { StarContext } from "contexts/starContext";
+import About from "components/About";
+import { StyledBadge } from "components/StyledBadge";
 const Home = () => {
-  
   const { visibleModal, onChangeVisibility } = useModal();
-  const { selectCharacter, character, people } = useContext(StarContext);
-
+  const {
+    selectCharacter,
+    character,
+    people,
+    totalPeople,
+    peopleTable,
+    isLoading,
+    getPeoplePerPage,
+  } = useContext(StarContext);
+  const totalPagination = Math.ceil(totalPeople / 10);
   if (people.length === 0)
     return (
       <Layout character="Lost among the galaxies">
         <Text>Lost among the galaxies</Text>
       </Layout>
     );
+
   return (
     <Layout character={people[0].name}>
       <Text
@@ -45,12 +63,17 @@ const Home = () => {
           <Table.Column>BIRTH YEAR</Table.Column>
           <Table.Column hideHeader>ACTIONS</Table.Column>
         </Table.Header>
-        <Table.Body>
-          <>
-            {people.map((person, index) => (
+        <Table.Body loadingState={isLoading ? "loading" : undefined}>
+          {peopleTable.map((person, index) => {
+            return (
               <Table.Row key={index}>
                 <Table.Cell>{person.name}</Table.Cell>
-                <Table.Cell>{person.gender}</Table.Cell>
+                <Table.Cell>
+                  {/*@ts-ignore */}
+                  <StyledBadge type={person?.gender}>
+                    {person.gender}
+                  </StyledBadge>
+                </Table.Cell>
                 <Table.Cell>{person.birth_year}</Table.Cell>
                 <Table.Cell>
                   <Tooltip content="Details">
@@ -65,41 +88,28 @@ const Home = () => {
                   </Tooltip>
                 </Table.Cell>
               </Table.Row>
-            ))}
-          </>
+            );
+          })}
         </Table.Body>
       </Table>
+      <Container
+        css={{
+          textAlign: "center",
+        }}
+      >
+        <Pagination
+          total={totalPagination}
+          initialPage={1}
+          onChange={(page) => getPeoplePerPage(page)}
+        />
+      </Container>
 
       <ModalC
         title={"More details about " + character.name}
         visible={visibleModal}
         closeHandler={onChangeVisibility}
       >
-        <Collapse.Group>
-          <Collapse title="Option A" subtitle="More description about Option A">
-            <Text>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat.
-            </Text>
-          </Collapse>
-          <Collapse
-            title="Option B"
-            subtitle={
-              <>
-                More description about <Text b>Option B</Text>
-              </>
-            }
-          >
-            <Text>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat.
-            </Text>
-          </Collapse>
-        </Collapse.Group>
+        <About />
       </ModalC>
     </Layout>
   );

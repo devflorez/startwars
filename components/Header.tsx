@@ -1,6 +1,8 @@
 import React from "react";
 import Image from "next/image";
 import { Navbar, Button, Input } from "@nextui-org/react";
+import InputSearch from "components/InputSearch";
+import { GithubIcon } from "icons/GithubIcon";
 export default function Header() {
   return (
     <header>
@@ -16,12 +18,17 @@ export default function Header() {
 
         <Navbar.Content>
           <Navbar.Item>
-            <Button auto flat href="#">
-              Code
-            </Button>
+            <Button
+              auto
+              flat
+              as="a"
+              target="_blank"
+              href="https://github.com/devflorez/startwars"
+              icon={<GithubIcon />}
+            />
           </Navbar.Item>
           <Navbar.Item>
-            <Input name="search" type="search" placeholder="Search Character" />
+            <InputSearch />
           </Navbar.Item>
         </Navbar.Content>
       </Navbar>

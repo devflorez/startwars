@@ -13,7 +13,7 @@ export default function ModalC({
       {button}
       <Modal closeButton open={visible} onClose={closeHandler}>
         <Modal.Header>
-          <Text id="modal-title" size={18}>
+          <Text id="modal-title" size={24}>
             {title}
           </Text>
         </Modal.Header>
