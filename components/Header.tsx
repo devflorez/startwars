@@ -1,25 +1,30 @@
 import React from "react";
 import Image from "next/image";
-import { Input, Menu } from "semantic-ui-react";
+import { Navbar, Button, Input } from "@nextui-org/react";
 export default function Header() {
   return (
     <header>
-      <Menu secondary  color="black">
-        <Menu.Item>
+      <Navbar variant="floating">
+        <Navbar.Brand>
           <Image
             src="/logo-yellow.png"
             alt="logo-starwars"
             width={80}
             height={34}
           />
-        </Menu.Item>
-        <Menu.Menu position="right">
-          <Menu.Item>
-            <Input icon="search" placeholder="Search..." />
-          </Menu.Item>
-        
-        </Menu.Menu>
-      </Menu>
+        </Navbar.Brand>
+
+        <Navbar.Content>
+          <Navbar.Item>
+            <Button auto flat href="#">
+              Code
+            </Button>
+          </Navbar.Item>
+          <Navbar.Item>
+            <Input name="search" type="search" placeholder="Search Character" />
+          </Navbar.Item>
+        </Navbar.Content>
+      </Navbar>
     </header>
   );
 }

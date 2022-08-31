@@ -1,0 +1,32 @@
+{
+    "theme_color": "#000000",
+    "background_color": "#101010",
+    "display": "browser",
+    "scope": "/",
+    "start_url": "/",
+    "name": "Star Wars By Devflorez",
+    "short_name": "Star Wars",
+    "description": "PWA en NEXTJS sobre la Guerra de las Galaxias, es una franquicia compuesta de pel\u00edculas, novelas, c\u00f3mics, videojuegos y juguetes .",
+    "icons": [
+        {
+            "src": "/icons/icon-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/icons/icon-256x256.png",
+            "sizes": "256x256",
+            "type": "image/png"
+        },
+        {
+            "src": "/icons/icon-384x384.png",
+            "sizes": "384x384",
+            "type": "image/png"
+        },
+        {
+            "src": "/icons/icon-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}
